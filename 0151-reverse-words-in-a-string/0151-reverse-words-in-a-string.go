@@ -1,41 +1,25 @@
 func reverseWords(s string) string {
-    start := 0
     end := len(s) -1
-    var front, back []byte
+    var ans []byte
     
-    for start <= end {
+    for end >= 0 {
     
-        // skip spaces before a word
-        for start <= end && s[start] == ' ' {
-            start++
-        }
-        // skip spaces after word
-        for start <= end && s[end] == ' ' {
+        // skip spaces before word
+        for end >= 0 && s[end] == ' ' {
             end--
         }
 
-        // pick the first word and add it to front of back string
-        var leftWord, rightWord []byte
-        for start <= end &&  s[start] != ' ' {
-            leftWord = append(leftWord, s[start])
-            start++
-        }
-        if leftWord != nil {
-            leftWord = append([]byte{' '}, leftWord...)
-            back = append(leftWord, back...)
-        }
-        // pick the word from right and append it to end of front string
-        for start <= end &&  s[end] != ' ' {
-            rightWord = append([]byte{s[end]}, rightWord...)
+        // pick the current work from the back and add it to the ans
+        var current_word []byte
+        for end >= 0 &&  s[end] != ' ' {
+            current_word = append([]byte{s[end]}, current_word...)
             end--
         }
-        if rightWord != nil {
-            rightWord = append(rightWord, ' ')
-            front =  append(front, rightWord...)
+        if current_word != nil {
+            current_word = append(current_word, ' ')
+            ans =  append(ans, current_word...)
         }
-        
-        start++
         end--
     }
-    return string(append(front, back[1:]...))
+    return string(ans[:len(ans)-1])
 }
