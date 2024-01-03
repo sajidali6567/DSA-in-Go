@@ -2,22 +2,19 @@ class Solution {
 public:
     int numberOfBeams(vector<string>& bank) {
         int m = bank.size();
-        vector<int> count(m, 0);
+        // prev represents the count of devices in previous row with non zero devices
+        int prevRowDeviceCount = 0, ans = 0;        
         for(int i=0;i<m;i++) {
+            int currentRowDeviceCount = 0;
             for(auto ch:bank[i]) {
                 if(ch == '1') {
-                    count[i]++;
+                    currentRowDeviceCount++;
                 }
             }
-        }
-
-        int prev = 0, ans = 0;        
-        for(int i=0;i<m;i++) {
-            // find the next non zero row
-            if(count[i] != 0) {
-                ans += prev * count[i];
-                prev = count[i];
-            }
+            
+            if (currentRowDeviceCount == 0) continue;
+            ans += prevRowDeviceCount * currentRowDeviceCount;
+            prevRowDeviceCount = currentRowDeviceCount;
         }
         return ans;
     }
