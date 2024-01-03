@@ -3,18 +3,23 @@ func numberOfBeams(banks []string) int {
     prevRowDeviceCount := 0
     ans := 0      
     for _, bank := range banks {
-        currentRowDeviceCount := 0
-        for _, ch := range bank {
-            if(ch == '1') {
-                currentRowDeviceCount++
-            }
-        }
-
-        if currentRowDeviceCount == 0 {
+        if !strings.Contains(bank, "1") {
             continue
         }
+        
+        currentRowDeviceCount := countOnes(bank)
         ans += prevRowDeviceCount * currentRowDeviceCount
         prevRowDeviceCount = currentRowDeviceCount
     }
     return ans
+}
+
+func countOnes(bank string) int {
+    currentRowDeviceCount := 0
+    for _, ch := range bank {
+        if(ch == '1') {
+            currentRowDeviceCount++
+        }
+    }
+    return currentRowDeviceCount
 }
