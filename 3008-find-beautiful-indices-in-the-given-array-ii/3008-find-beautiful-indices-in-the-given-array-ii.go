@@ -40,26 +40,26 @@ func beautifulIndices(s string, a string, b string, k int) []int {
     bIndices := findOccurenceOfPattern(b, s)
     fmt.Println(aIndices)
     fmt.Println(bIndices)
-    
     // Find the indices of a which are in b and at most k distance apart
     // Using two pointers approach keeping in mind that, indices are in sorted order
     // so if any element in a are 
-    i, j := 0, 0
+    
     ans := make([]int, 0)
-    for i < len(aIndices) {
-        for j < len(bIndices) && bIndices[j] <= aIndices[i] + k {
-            if Abs(bIndices[j], aIndices[i]) <= k {
+    for i := 0; i < len(aIndices); i++ {
+        // find if a j is present in bIndices where the condition is met
+        low, high := 0, len(bIndices)-1
+        for low <= high {
+            mid := (low + high)/2
+            if Abs(aIndices[i], bIndices[mid]) <= k {
+                ans = append(ans, aIndices[i])
                 break
             }
-            j++
+            if aIndices[i] - bIndices[mid] > k {
+                low = mid + 1
+            } else if aIndices[i] - bIndices[mid] < -k {
+                high = mid -1
+            }
         }
-        if j == len(bIndices) {
-            break;
-        }
-        if Abs(bIndices[j], aIndices[i]) <= k {
-            ans = append(ans, aIndices[i])
-        } 
-        i++
     }
     return ans
 }
