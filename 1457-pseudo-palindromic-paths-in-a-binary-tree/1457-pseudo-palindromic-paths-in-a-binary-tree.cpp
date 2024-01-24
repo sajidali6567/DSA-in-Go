@@ -11,27 +11,25 @@
  */
 class Solution {
 public:
-    map<int, int> mp;
-    int count = 0;
+    // This approach came from the leetcode solution, I used a map to store frequency of the node values
+    int bits = 0; // bits could be max of 10 bits, which denotes if the freq of 1, 2, 3 ... 9 is odd or even
+    int ans = 0;
     void DFS(TreeNode* root) {
-        mp[root->val]++; // add the root node to the map
+        bits ^= (1 << root->val); // add the root node to the map
         if(root->left == NULL && root->right == NULL) { // leaf node
             checkForPalindrome();
         }
         if(root->left) DFS(root->left);
         if(root->right) DFS(root->right);
-        mp[root->val]--; // remove once we are done with the left and right of it
+        bits ^= (1 << root->val); // remove once we are done with the left and right of it
     }
     // there should be only one or zero number with odd frequency to make it palindrome
     void checkForPalindrome() {
-        int oddCount = 0;
-        for(auto it:mp) {
-            if (it.second & 1) oddCount++;
-        }
-        if(oddCount <= 1) count++;
+        int oddCount = __builtin_popcount(bits);
+        if(oddCount <= 1) ans++;
     }
     int pseudoPalindromicPaths (TreeNode* root) {
         DFS(root);
-        return count;
+        return ans;
     }
 };
